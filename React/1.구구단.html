@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>구구단 클래스 컴포넌트</title>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script data-type="module" type="text/babel">
+        class GuguDan extends React.Component {
+            state = {
+                first: Math.ceil(Math.random() * 9),
+                second: Math.ceil(Math.random() * 9),
+                input: '',
+                result: '',
+                count: 0,
+            }
+            // constructor(props) {
+            //     super(props)
+            //     this.state = {
+            //         first: Math.ceil(Math.random() * 9),
+            //         second: Math.ceil(Math.random() * 9),
+            //         input: '',
+            //         result: ''
+            //     }
+            // }
+
+            onSubmit = e => {
+                e.preventDefault();
+                this.input.focus();
+                const answer = this.state.first * this.state.second
+                // 정답
+                if (parseInt(this.state.input) === answer) {
+                    // this.setState({
+                    //     first: Math.ceil(Math.random() * 9),
+                    //     second: Math.ceil(Math.random() * 9),
+                    //     input: "",
+                    //     // result: `정답: ${answer}`,
+                    //     result: `정답: ${this.state.input}`, // 현재 state
+                    // })
+                    this.setState(prev => {
+                        return {
+                            first: Math.ceil(Math.random() * 9),
+                            second: Math.ceil(Math.random() * 9),
+                            input: '',
+                            result: `정답: ${prev.input}`,
+                        }
+                    })
+                    return
+                }
+                this.setState({ result: "다시 도전!", input: '' })
+            }
+
+            onChange = e => {
+                this.setState({ input: e.target.value })
+            }
+
+            onPlus = () => {
+                this.setState(prev => {
+                    return { count: prev.count + 1 }
+                })
+            }
+            onMinus = () => {
+                this.setState(prev => {
+                    return { count: prev.count - 1 }
+                })
+            }
+
+            input;
+            onRefInput = c => { this.input = c }
+
+            render() {
+                return (
+                    <React.Fragment>
+                        <div>{this.state.first} X {this.state.second} = ?</div>
+                        <form onSubmit={this.onSubmit}>
+                            <input ref={this.onRefInput} type='number' value={this.state.input} onChange={this.onChange} />
+                            <button>입력!</button>
+                        </form>
+                        <div>{this.state.result}</div>
+
+                        <div>카운트연습 {this.state.count}</div>
+                        <button onClick={this.onPlus}>더하기</button>
+                        <button onClick={this.onMinus}>빼기</button>
+                    </React.Fragment>
+                )
+            }
+        }
+    </script>
+    <script type="text/babel">
+        ReactDOM.render(<GuguDan />, document.querySelector('#root'))
+    </script>
+</body>
+
+</html>
