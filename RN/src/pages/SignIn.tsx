@@ -1,41 +1,69 @@
-import React, {useState, useRef} from 'react';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import React, {useState, useRef, useCallback} from 'react';
+import {Alert} from 'react-native';
 import {View, Text, TextInput, Pressable, StyleSheet} from 'react-native';
+import {RootStackParamList} from '../../App';
 
-export default () => {
+type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'SignIn'>;
+
+export default ({navigation}: SignInScreenProps) => {
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
   const canGoNext = !email || !pw;
+  const emailRef = useRef<TextInput | null>(null); // generic
+  const pwRef = useRef<TextInput | null>(null);
 
-  
-  const onSubmit = () => {
-    console.log('로그인완료', {email, pw});
-  };
-  const onSignUp = () => {};
+  const onSubmit = useCallback(() => {
+    if (!email || !email.trim()) {
+      Alert.alert('알림', '이메일을 입력해주세요');
+      return;
+    }
+    if (!pw || !pw.trim()) {
+      Alert.alert('알림', '비밀번호를 입력해주세요');
+      return;
+    }
+    Alert.alert('알림', `${email}님 환영합니다`);
+    setEmail('');
+    setPw('');
+  }, [email, pw]);
+
+  const onSignUp = useCallback(() => {
+    navigation.navigate('SignIn');
+  }, [navigation]);
   return (
     <View style={styles.container}>
       <View style={[styles.row, styles.inputWrap]}>
         <Text style={styles.label}>이메일</Text>
         <TextInput
           placeholder="이메일을 입력해주세요"
+          value={email}
           onChangeText={setEmail}
           style={styles.input}
           importantForAutofill="yes" // 안드로이드 자동완성
           autoComplete="email" // 자동완성
           textContentType="emailAddress" // ios 자동완성
           ref={emailRef}
-          onSubmitEditing={() => console.log('onSubmitEditing')}
+          blurOnSubmit={false} // 키보드 내려가는거 막음
+          clearButtonMode="while-editing" // ios 전체삭제
+          onSubmitEditing={() => {
+            console.log('onSubmitEditing');
+            pwRef.current?.focus();
+          }}
         />
       </View>
       <View style={[styles.row, styles.inputWrap]}>
         <Text style={styles.label}>비밀번호</Text>
         <TextInput
           placeholder="비밀번호를 입력해주세요"
+          value={pw}
           onChangeText={setPw}
           style={styles.input}
           secureTextEntry
           autoComplete="password"
           textContentType="password"
+          returnKeyType="next"
           ref={pwRef}
+          onSubmitEditing={onSubmit}
         />
       </View>
       <View style={[styles.row, styles.btns]}>
