@@ -3,6 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Text, View, Pressable, StyleSheet, Dimensions} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import codePush from 'react-native-code-push';
 
 import Delivery from 'pages/Delivery';
 import Orders from 'pages/Orders';
@@ -21,6 +22,19 @@ export type LoggedInParamList = {
 export type RootStackParamList = {
   SignIn: undefined;
   SignUp: undefined;
+};
+
+const codePushOptions = {
+  checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
+  installMode: codePush.InstallMode.IMMEDIATE,
+  updateDialog: {
+    title: '업데이트',
+    mandatoryUpdateMessage: '업데이트 리소스를 다운로드 합니다.',
+    mandatoryContinueButtonLabel: '확인',
+    optionalUpdateMessage: '지금 업데이트하시겠습니까?',
+    optionalIgnoreButtonLabel: '나중에',
+    optionalInstallButtonLabel: '업데이트',
+  },
 };
 
 const {width: WINDOW_WIDTH} = Dimensions.get('window');
@@ -74,7 +88,7 @@ const styles = StyleSheet.create({
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-function App() {
+const InitialApp = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [dialog, setDialog] = useState(false);
   return (
@@ -116,6 +130,7 @@ function App() {
       <Dialog show={dialog} />
     </NavigationContainer>
   );
-}
+};
 
+const App = codePush(codePushOptions)(InitialApp);
 export default App;

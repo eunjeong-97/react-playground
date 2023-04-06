@@ -16,6 +16,9 @@
 
 #import <react/config/ReactNativeConfig.h>
 
+// codepush
+#import <CodePush/CodePush.h>
+
 static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 @interface AppDelegate () <RCTCxxBridgeDelegate, RCTTurboModuleManagerDelegate> {
@@ -85,9 +88,12 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
 #if DEBUG
-  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
+  // return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
+  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 #else
-  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  // return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  return [CodePush bundleURL]; // codepush: 앱이 항상 최신버전의 앱의 JS번들을 로드하도록 앱을 구성한다
+  // 처음실행할때는 앱과 함께 컴파일된 파일에 해당하지만, 코드푸시를 통해 업데이트를 푸시한 이후에는 가장 최근에 설치된 업데이트의 위치를 반환한다
 #endif
 }
 

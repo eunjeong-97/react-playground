@@ -7,13 +7,17 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "codepush": "appcenter codepush release-react -a eoss7777-naver.com/EunJeongApp-1 -d Staging -m"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.18.0",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
+    "appcenter": "4.4.5",
+    "appcenter-analytics": "4.4.5",
+    "appcenter-crashes": "4.4.5",
     "eslint-import-resolver-babel-module": "^5.3.2",
     "react": "18.1.0",
     "react-native": "0.70.6",
@@ -21,7 +25,8 @@
     "react-native-safe-area-context": "^4.5.0",
     "react-native-screens": "^3.20.0",
     "redux-flipper": "^2.0.2",
-    "rn-async-storage-flipper": "^0.0.10"
+    "rn-async-storage-flipper": "^0.0.10",
+    "verbal-expressions": "^1.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -41,6 +46,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "0.72.3",
+    "react-native-code-push": "^7.1.0",
     "react-test-renderer": "18.1.0",
     "typescript": "^4.8.3"
   },
