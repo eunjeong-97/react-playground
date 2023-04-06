@@ -2,6 +2,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useState, useRef, useCallback} from 'react';
 import {Alert} from 'react-native';
 import {View, Text, TextInput, Pressable, StyleSheet} from 'react-native';
+
 import {RootStackParamList} from '../../App';
 
 type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'SignIn'>;
@@ -28,7 +29,7 @@ export default ({navigation}: SignInScreenProps) => {
   }, [email, pw]);
 
   const onSignUp = useCallback(() => {
-    navigation.navigate('SignIn');
+    navigation.navigate('SignUp');
   }, [navigation]);
   return (
     <View style={styles.container}>
@@ -42,9 +43,10 @@ export default ({navigation}: SignInScreenProps) => {
           importantForAutofill="yes" // 안드로이드 자동완성
           autoComplete="email" // 자동완성
           textContentType="emailAddress" // ios 자동완성
-          ref={emailRef}
+          returnKeyType="next"
           blurOnSubmit={false} // 키보드 내려가는거 막음
           clearButtonMode="while-editing" // ios 전체삭제
+          ref={emailRef}
           onSubmitEditing={() => {
             console.log('onSubmitEditing');
             pwRef.current?.focus();
@@ -78,7 +80,7 @@ export default ({navigation}: SignInScreenProps) => {
           <Text style={styles.btnTitle}>로그인</Text>
         </Pressable>
         <Pressable onPress={onSignUp} style={[styles.center, styles.btn]}>
-          <Text>회원가입하기</Text>
+          <Text style={styles.label}>회원가입하기</Text>
         </Pressable>
       </View>
     </View>
@@ -94,12 +96,13 @@ const styles = StyleSheet.create({
   btns: {paddingTop: 10},
   active: {backgroundColor: 'royalblue'},
   btnTitle: {color: 'white', fontWeight: 'bold'},
-  label: {fontWeight: 'bold', fontSize: 16, flex: 1},
+  label: {fontWeight: 'bold', fontSize: 16, flex: 1, color: 'gray'},
   inputWrap: {marginVertical: 5},
   input: {
     padding: 0,
     paddingHorizontal: 5,
     borderBottomWidth: StyleSheet.hairlineWidth,
     flex: 4,
+    color: 'black',
   },
 });
